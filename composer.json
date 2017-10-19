@@ -4,6 +4,7 @@
 	"type": "library",
 	"license": "MIT",
 	"version": "1.0",
+	"minimum-stability": "stable",
 	"authors": [
 		{
 			"name": "Song Hyo-Jin",
