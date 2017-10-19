@@ -9,7 +9,7 @@ $domain = 'github.com'; // not support subdomain.
 
 $info = \Xeno\Net\Whois\Whois::query($domain);
 
-use \Xeno\Net\Whois\Whois;
+use \Xeno\Net\Whois\Whois; // shortly
 
 if(Whois::isRegistered($info) == $domain) {
 	echo "$domain was registered\n";
