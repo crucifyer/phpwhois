@@ -1,0 +1,23 @@
+{
+	"name": "crucifyer/phpwhois",
+	"description": "whois query for php",
+	"type": "library",
+	"license": "MIT",
+	"version": "1.0",
+	"authors": [
+		{
+			"name": "Song Hyo-Jin",
+			"email": "shj@xenosi.de",
+			"homepage": "https://github.com/crucifyer/"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Xeno\\": "Xeno/"
+		}
+	},
+	"require": {
+		"php": ">=5.4",
+		"true/punycode": "~2.0"
+	}
+}
