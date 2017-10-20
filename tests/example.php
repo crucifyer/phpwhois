@@ -16,7 +16,7 @@ if(Whois::isRegistered($info, $domain)) {
 	if(false === ($expiry = Whois::getExpiryDate($info))) {
 		echo "expiry date not found\n";
 	} else {
-		echo 'expiry date: ', $expiry, "\n";
+		echo "expiry date: $expiry\n";
 	}
 } else {
 	echo "$domain not found\n";
