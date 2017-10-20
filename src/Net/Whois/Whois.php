@@ -26,9 +26,10 @@ class Whois
 		return $result;
 	}
 
-	public static function isRegistered($infotext) {
+	public static function isRegistered($infotext, $domain) {
+		if(!self::$punycode) self::$punycode = new \TrueBV\Punycode();
 		if(!preg_match('~(?:^[^a-z]*domain|domain name).*?([^:\[\]\s]+)\s*$~im', $infotext, $matches)) return false;
-		return strtolower($matches[1]);
+		return self::$punycode->encode($matches[1]) == self::$punycode->encode($domain);
 	}
 
 	public static function getExpiryTimestamp($infotext) {

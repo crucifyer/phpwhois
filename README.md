@@ -11,7 +11,7 @@ $info = \Xeno\Net\Whois\Whois::query($domain);
 
 use \Xeno\Net\Whois\Whois; // shortly
 
-if(Whois::isRegistered($info) == $domain) {
+if(Whois::isRegistered($info, $domain)) {
 	echo "$domain was registered\n";
 	if(false === ($expiry = Whois::getExpiryDate($info))) {
 		echo "expiry date not found\n";
