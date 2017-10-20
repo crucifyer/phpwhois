@@ -3,7 +3,7 @@
 chdir(__DIR__);
 include_once '../vendor/autoload.php';
 
-$domain = '한국인.한국'; // not support subdomain.
+$domain = 'github.com'; // not support subdomain.
 
 $info = \Xeno\Net\Whois\Whois::query($domain);
 
