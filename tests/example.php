@@ -1,10 +1,13 @@
 <?php
 
+chdir(__DIR__);
 include_once '../vendor/autoload.php';
 
 $domain = 'github.com'; // not support subdomain.
 
 $info = \Xeno\Net\Whois\Whois::query($domain);
+
+echo $info, "\n";
 
 use \Xeno\Net\Whois\Whois;
 

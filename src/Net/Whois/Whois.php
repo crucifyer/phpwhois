@@ -27,7 +27,7 @@ class Whois
 	}
 
 	public static function isRegistered($infotext) {
-		if(!preg_match('~^[^a-z]*domain.*?([^:\[\]\s]+)\s*$~im', $infotext, $matches)) return false;
+		if(!preg_match('~(?:^[^a-z]*domain|domain name).*?([^:\[\]\s]+)\s*$~im', $infotext, $matches)) return false;
 		return strtolower($matches[1]);
 	}
 
