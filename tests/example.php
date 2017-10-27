@@ -3,7 +3,7 @@
 chdir(__DIR__);
 include_once '../vendor/autoload.php';
 
-$domain = 'github.com'; // not support subdomain.
+$domain = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : 'github.com'; // not support subdomain.
 
 $info = \Xeno\Net\Whois\Whois::query($domain);
 
