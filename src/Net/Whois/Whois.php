@@ -33,9 +33,8 @@ class Whois
 		return false;
 	}
 
-	public static function isRegistered($infotext, $domain) {
-		if(!self::$punycode) self::$punycode = new \TrueBV\Punycode();
-		return preg_match('~(?:^[^a-z]*domain|domain name).*?\b(?:'.preg_quote(self::$punycode->encode($domain), '~').'|'.preg_quote(self::$punycode->decode($domain), '~').')$~im', $infotext) ? true : false;
+	public static function isRegistered($infotext) {
+		return preg_match('~no match|no data|domain[^\r\n]*not found|status\s*:\s*free~i', $infotext) ? false : true;
 	}
 
 	public static function getExpiryTimestamp($infotext) {
