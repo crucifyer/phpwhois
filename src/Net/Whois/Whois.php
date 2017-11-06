@@ -30,8 +30,8 @@ class Whois
 		while(false !== ($row = fgets($fp, 8192))) {
 			$result .= $row;
 		}
-		if($recursion && preg_match('~whois.*?[\]:]\s*(.+?)\s*$~im', $result, $matches)) {
-			return $result."\r\n\r\n".self::query($domain, $matches[1]);
+		if($recursion && preg_match('~(?:referral\s*server|whois\s*server|country(?:\s*code)?)\s*[\]:]\s*(.+?)\s*$~im', $result, $matches)) {
+			return $result."\r\n\r\n".self::query($domain, trim(preg_replace('~^\s*(https?|whois)://~i', '', $matches[1])));
 		}
 		return $result;
 	}
