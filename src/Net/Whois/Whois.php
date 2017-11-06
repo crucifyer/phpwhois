@@ -4,21 +4,31 @@ namespace Xeno\Net\Whois;
 
 class Whois
 {
-	private static $tlds, $punycode;
+	private static $tlds, $punycode, $recursion = TRUE;
 
-	public static function query($domain) {
+	public static function setRecursion($flag) {
+		self::$recursion = $flag;
+	}
+
+	public static function query($domain, $whois = null) {
 		if(!self::$punycode) self::$punycode = new \TrueBV\Punycode();
 		$domain = self::$punycode->encode($domain);
-		if(false === ($tldo = self::getTld($domain))) return false;
-		if($tldo->whois == 'notfound') return false;
 		$query = $domain;
-		if(isset($tldo->option->left)) $query = $tldo->option->left.$query;
-		if(isset($tldo->option->right)) $query .= $tldo->option->right;
-		$fp = fsockopen($tldo->whois, 43, $errno, $errstr, 5);
+		if(null == $whois) {
+			if (false === ($tldo = self::getTld($domain))) return false;
+			if ($tldo->whois == 'notfound') return false;
+			if (isset($tldo->option->left)) $query = $tldo->option->left . $query;
+			if (isset($tldo->option->right)) $query .= $tldo->option->right;
+			$whois = $tldo->whois;
+		}
+		$fp = fsockopen($whois, 43, $errno, $errstr, 5);
 		fwrite($fp, "$query\r\n");
 		$result = '';
 		while(false !== ($row = fgets($fp, 8192))) {
 			$result .= $row;
+		}
+		if(self::$recursion && preg_match('~whois.*?[\]:]\s*(.+?)\s*$~im', $result, $matches)) {
+			return self::query($domain, $matches[1]);
 		}
 		return $result;
 	}
