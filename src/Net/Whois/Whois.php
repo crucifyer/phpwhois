@@ -31,7 +31,7 @@ class Whois
 			$result .= $row;
 		}
 		if($recursion && preg_match('~whois.*?[\]:]\s*(.+?)\s*$~im', $result, $matches)) {
-			return self::query($domain, $matches[1]);
+			return $result."\r\n\r\n".self::query($domain, $matches[1]);
 		}
 		return $result;
 	}
