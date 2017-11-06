@@ -31,7 +31,10 @@ class Whois
 			$result .= $row;
 		}
 		if($recursion && preg_match('~(?:referral\s*server|whois\s*server|country(?:\s*code)?)\s*[\]:]\s*(.+?)\s*$~im', $result, $matches)) {
-			return $result."\r\n\r\n".self::query($domain, trim(preg_replace('~^\s*(https?|whois)://~i', '', $matches[1])));
+			$nwhois = strtolower(trim(preg_replace('~^\s*(https?|whois)://~i', '', $matches[1])));
+			if($whois != $nwhois) {
+				return $result."\r\n\r\n".self::query($domain, $nwhois);
+			}
 		}
 		return $result;
 	}
