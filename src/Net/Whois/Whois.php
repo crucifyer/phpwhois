@@ -20,6 +20,9 @@ class Whois
 			if (isset($tldo->option->left)) $query = $tldo->option->left . $query;
 			if (isset($tldo->option->right)) $query .= $tldo->option->right;
 			$whois = $tldo->whois;
+			$recursion = self::$recursion;
+		} else {
+			$recursion = false;
 		}
 		$fp = fsockopen($whois, 43, $errno, $errstr, 5);
 		fwrite($fp, "$query\r\n");
@@ -27,7 +30,7 @@ class Whois
 		while(false !== ($row = fgets($fp, 8192))) {
 			$result .= $row;
 		}
-		if(self::$recursion && preg_match('~whois.*?[\]:]\s*(.+?)\s*$~im', $result, $matches)) {
+		if($recursion && preg_match('~whois.*?[\]:]\s*(.+?)\s*$~im', $result, $matches)) {
 			return self::query($domain, $matches[1]);
 		}
 		return $result;
