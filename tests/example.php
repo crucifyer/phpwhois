@@ -5,7 +5,7 @@ include_once '../vendor/autoload.php';
 
 $domain = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : 'github.com'; // not support subdomain.
 
-$info = \Xeno\Net\Whois\Whois::query($domain);
+if(!($info = \Xeno\Net\Whois\Whois::query($domain))) echo "$domain no response\n";
 
 echo $info, "\n";
 

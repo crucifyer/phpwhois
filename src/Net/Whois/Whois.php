@@ -24,7 +24,7 @@ class Whois
 		} else {
 			$recursion = false;
 		}
-		$fp = fsockopen($whois, 43, $errno, $errstr, 5);
+		$fp = fsockopen($whois, 43, $errno, $errstr, 1);
 		fwrite($fp, "$query\r\n");
 		$result = '';
 		while(false !== ($row = fgets($fp, 8192))) {
@@ -33,7 +33,8 @@ class Whois
 		if($recursion && preg_match('~(?:referral\s*server|whois\s*server|country(?:\s*code)?)\s*[\]:]\s*(.+?)\s*$~im', $result, $matches)) {
 			$nwhois = strtolower(trim(preg_replace('~^\s*(https?|whois)://~i', '', $matches[1])));
 			if($whois != $nwhois) {
-				return $result."\r\n\r\n".self::query($domain, $nwhois);
+				$result2 = self::query($domain, $nwhois);
+				if(self::isRegistered($result2)) return "$result\r\n\r\n$result2";
 			}
 		}
 		return $result;
