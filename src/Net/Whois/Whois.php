@@ -4,6 +4,7 @@ namespace Xeno\Net\Whois;
 
 class Whois
 {
+	const TIMEOUT = 3;
 	private static $tlds, $punycode, $recursion = TRUE;
 
 	public static function setRecursion($flag) {
@@ -24,7 +25,7 @@ class Whois
 		} else {
 			$recursion = false;
 		}
-		$fp = fsockopen($whois, 43, $errno, $errstr, 1);
+		$fp = fsockopen($whois, 43, $errno, $errstr, self::TIMEOUT);
 		fwrite($fp, "$query\r\n");
 		$result = '';
 		while(false !== ($row = fgets($fp, 8192))) {
