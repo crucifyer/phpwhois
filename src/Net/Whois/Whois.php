@@ -31,9 +31,9 @@ class Whois
 		while(false !== ($row = fgets($fp, 8192))) {
 			$result .= $row;
 		}
-		if($recursion && preg_match('~(?:referral\s*server|whois\s*server|country(?:\s*code)?)\s*[\]:]\s*(.+?)\s*$~im', $result, $matches)) {
+		if($recursion && preg_match('~(?:referral[ \t]*server|whois[ \t]*server|country(?:[ \t]*code)?)[ \t]*[\]:][ \t]*([^\r\n]+?)[ \t]*$~im', $result, $matches)) {
 			$nwhois = strtolower(trim(preg_replace('~^\s*(https?|whois)://~i', '', $matches[1])));
-			if($whois != $nwhois) {
+			if($nwhois && $whois != $nwhois) {
 				$result2 = self::query($domain, $nwhois);
 				if(self::isRegistered($result2)) return "$result\r\n\r\n$result2";
 			}
@@ -52,6 +52,7 @@ class Whois
 	}
 
 	public static function isRegistered($infotext) {
+		if(!$infotext) return false;
 		return preg_match('~no match|no data|domain[^\r\n]*not found|status\s*:\s*free~i', $infotext) ? false : true;
 	}
 
