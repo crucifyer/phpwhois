@@ -15,9 +15,9 @@ class Whois
 		if(!self::$punycode) self::$punycode = new \TrueBV\Punycode();
 		$domain = self::$punycode->encode($domain);
 		$query = $domain;
-		if(null == $whois) {
-			if (false === ($tldo = self::getTld($domain))) return false;
-			if ($tldo->whois == 'notfound') return false;
+		if('' == $whois) {
+			if (false === ($tldo = self::getTld($domain))) return '';
+			if ($tldo->whois == 'notfound' || $tldo->whois == '') return '';
 			if (isset($tldo->option->left)) $query = $tldo->option->left . $query;
 			if (isset($tldo->option->right)) $query .= $tldo->option->right;
 			$whois = $tldo->whois;
@@ -25,15 +25,16 @@ class Whois
 		} else {
 			$recursion = false;
 		}
+		if(!$whois) return '';
 		$fp = fsockopen($whois, 43, $errno, $errstr, self::TIMEOUT);
 		fwrite($fp, "$query\r\n");
 		$result = '';
 		while(false !== ($row = fgets($fp, 8192))) {
 			$result .= $row;
 		}
-		if($recursion && preg_match('~(?:referral[ \t]*server|whois[ \t]*server|country(?:[ \t]*code)?)[ \t]*[\]:][ \t]*([^\r\n]+?)[ \t]*$~im', $result, $matches)) {
+		if($recursion && preg_match('~(?:referral\s*server|whois\s*server|country(?:\s*code)?)\s*[\]:]\s*(.+?)\s*$~im', $result, $matches)) {
 			$nwhois = strtolower(trim(preg_replace('~^\s*(https?|whois)://~i', '', $matches[1])));
-			if($nwhois && $whois != $nwhois) {
+			if(substr($nwhois, -1) != ':' && $whois != $nwhois) {
 				$result2 = self::query($domain, $nwhois);
 				if(self::isRegistered($result2)) return "$result\r\n\r\n$result2";
 			}
@@ -52,7 +53,6 @@ class Whois
 	}
 
 	public static function isRegistered($infotext) {
-		if(!$infotext) return false;
 		return preg_match('~no match|no data|domain[^\r\n]*not found|status\s*:\s*free~i', $infotext) ? false : true;
 	}
 
