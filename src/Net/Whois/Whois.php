@@ -57,7 +57,7 @@ class Whois
 	}
 
 	public static function getExpiryTimestamp($infotext) {
-		if (preg_match('~(?:expir|paid-till|connected\s*\().*?\b(\d[^\)\]\r\n]+)~i', $infotext, $matches)) {
+		if (preg_match('~registrar registration expiration date.*?\b(\d[^\)\]\r\n]+)~i', $infotext, $matches) || preg_match('~(?:expir|paid-till|connected\s*\().*?\b(\d[^\)\]\r\n]+)~i', $infotext, $matches)) {
 			return strtotime(preg_replace('~^(\d+)\.\s*(\d+)\.\s*(\d+)\.?$~', '\1-\2-\3', $matches[1]));
 		}
 		return false;
