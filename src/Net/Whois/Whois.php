@@ -26,10 +26,10 @@ class Whois
 			$recursion = false;
 		}
 		if(!$whois) return '';
-		$fp = fsockopen($whois, 43, $errno, $errstr, self::TIMEOUT);
+		if(!($fp = @fsockopen($whois, 43, $errno, $errstr, self::TIMEOUT))) return '';
 		fwrite($fp, "$query\r\n");
 		$result = '';
-		while(false !== ($row = fgets($fp, 8192))) {
+		while(false !== ($row = @fgets($fp, 8192))) {
 			$result .= $row;
 		}
 		if($recursion && preg_match('~(?:referral\s*server|whois\s*server|country(?:\s*code)?)\s*[\]:]\s*(.+?)\s*$~im', $result, $matches)) {
