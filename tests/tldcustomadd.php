@@ -17,6 +17,3 @@ foreach(['gb', 'se', 'uk'] as $d) {
 // ipv6 not response servers
 \Xeno\Net\Whois\Tld::addServer('kr', '49.8.14.101');
 \Xeno\Net\Whois\Tld::addServer('best', '119.252.181.109');
-
-// whois.nic.shop unreachable
-\Xeno\Net\Whois\Tld::addServer('shop', 'whois.nic.or.kr');
