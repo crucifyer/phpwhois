@@ -1,5 +1,9 @@
 # php whois query library
 
+The https://packagist.org/packages/io-developer/php-whois project is great.
+
+I'll leave my project for php version 5.
+
 ```bash
 $ php composer.phar require "crucifyer/phpwhois" "dev-master"
 ```
