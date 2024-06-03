@@ -7,6 +7,7 @@ include_once '../vendor/autoload.php';
 \Xeno\Net\Whois\Tld::addServer('co.nl', 'whois.co.nl');
 \Xeno\Net\Whois\Tld::addServer('ac.uk', 'whois.ja.net');
 \Xeno\Net\Whois\Tld::addServer('gov.uk', 'whois.ja.net');
+\Xeno\Net\Whois\Tld::addServer('au', 'whois.auda.org.au');
 foreach(['br', 'cn', 'eu', 'gb', 'hu', 'no', 'qc', 'sa', 'se', 'uk', 'us', 'uy', 'za'] as $d) {
 	\Xeno\Net\Whois\Tld::addServer($d.'.com', 'whois.centralnic.com');
 }
